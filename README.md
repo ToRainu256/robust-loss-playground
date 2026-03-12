@@ -1,7 +1,7 @@
 # robust-loss-playground
 
 [![PyPI version](https://img.shields.io/pypi/v/robust-loss-playground)](https://pypi.org/project/robust-loss-playground/)
-[![Python](https://img.shields.io/pypi/pyversions/robust-loss-playground)](https://pypi.org/project/robust-loss-playground/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://pypi.org/project/robust-loss-playground/)
 [![License: MIT](https://img.shields.io/pypi/l/robust-loss-playground)](https://github.com/torainu256/robust-loss-playground/blob/main/LICENSE)
 
 Research-oriented robust loss library with PyTorch and NumPy backends.
