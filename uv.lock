@@ -1235,7 +1235,6 @@ dependencies = [
     { name = "matplotlib" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "torch" },
 ]
 
 [package.optional-dependencies]
@@ -1243,6 +1242,10 @@ dev = [
     { name = "mypy" },
     { name = "pytest" },
     { name = "ruff" },
+    { name = "torch" },
+]
+torch = [
+    { name = "torch" },
 ]
 
 [package.metadata]
@@ -1252,9 +1255,10 @@ requires-dist = [
     { name = "numpy" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "ruff", marker = "extra == 'dev'" },
-    { name = "torch" },
+    { name = "torch", marker = "extra == 'dev'", specifier = ">=2.0" },
+    { name = "torch", marker = "extra == 'torch'", specifier = ">=2.0" },
 ]
-provides-extras = ["dev"]
+provides-extras = ["torch", "dev"]
 
 [[package]]
 name = "ruff"

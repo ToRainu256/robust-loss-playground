@@ -1,5 +1,13 @@
 """PyTorch backend for robust loss functions."""
 
+try:
+    import torch as _torch  # noqa: F401
+except ImportError as e:
+    raise ImportError(
+        "PyTorch is required for robust_loss.torch. "
+        "Install it with: pip install robust-loss-playground[torch]"
+    ) from e
+
 from robust_loss.torch.base import BaseRobustLoss
 from robust_loss.torch.cauchy import Cauchy
 from robust_loss.torch.charbonnier import Charbonnier

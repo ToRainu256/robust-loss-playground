@@ -9,18 +9,40 @@ description = "Research-oriented robust loss library with PyTorch and NumPy back
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
+keywords = ["robust-loss", "m-estimation", "pytorch", "influence-function", "huber", "cauchy"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "numpy",
-    "torch",
     "matplotlib",
 ]
 
 [project.optional-dependencies]
+torch = ["torch>=2.0"]
 dev = [
     "pytest",
     "ruff",
     "mypy",
+    "torch>=2.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/torainu256/robust-loss-playground"
+Repository = "https://github.com/torainu256/robust-loss-playground"
+Issues = "https://github.com/torainu256/robust-loss-playground/issues"
+
+[tool.hatch.build.targets.sdist]
+exclude = [".venv", "list", "*.png"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/robust_loss"]
