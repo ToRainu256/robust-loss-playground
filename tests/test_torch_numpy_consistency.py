@@ -135,3 +135,27 @@ class TestTukeyConsistency:
         np_loss = np_losses.Tukey(c=4.685, scale=2.0, reduction="none")
         pt_loss = pt_losses.Tukey(c=4.685, scale=2.0, reduction="none")
         _check_consistency(np_loss, pt_loss, "Tukey(c=4.685,scale=2)")
+
+
+class TestGemanMcClureConsistency:
+    def test_default_scale(self) -> None:
+        np_loss = np_losses.GemanMcClure(scale=1.0, reduction="none")
+        pt_loss = pt_losses.GemanMcClure(scale=1.0, reduction="none")
+        _check_consistency(np_loss, pt_loss, "GemanMcClure(scale=1)")
+
+    def test_scale_2(self) -> None:
+        np_loss = np_losses.GemanMcClure(scale=2.0, reduction="none")
+        pt_loss = pt_losses.GemanMcClure(scale=2.0, reduction="none")
+        _check_consistency(np_loss, pt_loss, "GemanMcClure(scale=2)")
+
+
+class TestWelschConsistency:
+    def test_default_scale(self) -> None:
+        np_loss = np_losses.Welsch(scale=1.0, reduction="none")
+        pt_loss = pt_losses.Welsch(scale=1.0, reduction="none")
+        _check_consistency(np_loss, pt_loss, "Welsch(scale=1)")
+
+    def test_scale_2(self) -> None:
+        np_loss = np_losses.Welsch(scale=2.0, reduction="none")
+        pt_loss = pt_losses.Welsch(scale=2.0, reduction="none")
+        _check_consistency(np_loss, pt_loss, "Welsch(scale=2)")

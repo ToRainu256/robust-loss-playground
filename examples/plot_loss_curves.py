@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use("Agg")  # non-interactive backend
 import matplotlib.pyplot as plt
 
-from robust_loss.numpy import L2, Huber, Charbonnier, Cauchy, Tukey
+from robust_loss.numpy import L2, Huber, Charbonnier, Cauchy, Tukey, GemanMcClure, Welsch
 from robust_loss.plotting import plot_rho
 
 losses = {
@@ -14,6 +14,8 @@ losses = {
     "Charbonnier": Charbonnier(reduction="none"),
     "Cauchy": Cauchy(reduction="none"),
     "Tukey": Tukey(reduction="none"),
+    "GemanMcClure": GemanMcClure(reduction="none"),
+    "Welsch": Welsch(reduction="none"),
 }
 fig, ax = plot_rho(losses)
 ax.set_title("Robust Loss Functions: ρ(r)")

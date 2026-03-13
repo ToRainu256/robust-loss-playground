@@ -12,7 +12,7 @@ from __future__ import annotations
 import pytest
 import torch
 
-from robust_loss.torch import L1, L2, Cauchy, Charbonnier, Huber, Tukey
+from robust_loss.torch import L1, L2, Cauchy, Charbonnier, GemanMcClure, Huber, Tukey, Welsch
 
 # =========================================================================== #
 # Test fixtures: build loss instances with reduction="none"
@@ -27,6 +27,8 @@ LOSS_INSTANCES = [
     ),
     pytest.param(Cauchy(scale=1.0, reduction="none"), id="Cauchy"),
     pytest.param(Tukey(c=4.685, scale=1.0, reduction="none"), id="Tukey"),
+    pytest.param(GemanMcClure(scale=1.0, reduction="none"), id="GemanMcClure"),
+    pytest.param(Welsch(scale=1.0, reduction="none"), id="Welsch"),
 ]
 
 DTYPES = [

@@ -9,7 +9,7 @@ from __future__ import annotations
 import numpy as np
 from numpy.testing import assert_allclose
 
-from robust_loss.numpy import L1, L2, Cauchy, Charbonnier, Huber, Tukey
+from robust_loss.numpy import L1, L2, Cauchy, Charbonnier, GemanMcClure, Huber, Tukey, Welsch
 
 # Shared residual vector used across all tests.
 R = np.array([-2.0, -1.0, 0.0, 1.0, 2.0])
@@ -196,6 +196,59 @@ class TestTukey:
         r_far = np.array([-10.0, -5.0, 5.0, 10.0])
         expected = np.zeros_like(r_far)
         assert_allclose(self.loss.influence(r_far), expected, atol=1e-12)
+
+
+# --------------------------------------------------------------------------- #
+# Geman-McClure
+# --------------------------------------------------------------------------- #
+class TestGemanMcClure:
+    def setup_method(self) -> None:
+        self.loss = GemanMcClure(scale=1.0, reduction="none")
+
+    def test_rho(self) -> None:
+        u2 = R**2
+        expected = u2 / (1.0 + u2)
+        assert_allclose(self.loss.rho(R), expected, rtol=1e-6)
+
+    def test_influence(self) -> None:
+        u2 = R**2
+        expected = 2.0 * R / (1.0 + u2) ** 2
+        assert_allclose(self.loss.influence(R), expected, rtol=1e-6)
+
+    def test_weight(self) -> None:
+        u2 = R**2
+        expected = np.where(np.abs(R) > 1e-12, 2.0 / (1.0 + u2) ** 2, 2.0)
+        assert_allclose(self.loss.weight(R), expected, rtol=1e-6)
+
+    def test_rho_known_values(self) -> None:
+        r = np.array([0.0, 1.0, 2.0])
+        expected = np.array([0.0, 0.5, 0.8])
+        assert_allclose(self.loss.rho(r), expected, rtol=1e-10)
+
+
+# --------------------------------------------------------------------------- #
+# Welsch
+# --------------------------------------------------------------------------- #
+class TestWelsch:
+    def setup_method(self) -> None:
+        self.loss = Welsch(scale=1.0, reduction="none")
+
+    def test_rho(self) -> None:
+        expected = 1.0 - np.exp(-0.5 * R**2)
+        assert_allclose(self.loss.rho(R), expected, rtol=1e-6)
+
+    def test_influence(self) -> None:
+        expected = R * np.exp(-0.5 * R**2)
+        assert_allclose(self.loss.influence(R), expected, rtol=1e-6)
+
+    def test_weight(self) -> None:
+        expected = np.where(np.abs(R) > 1e-12, np.exp(-0.5 * R**2), 1.0)
+        assert_allclose(self.loss.weight(R), expected, rtol=1e-6)
+
+    def test_rho_known_values(self) -> None:
+        r = np.array([0.0, 1.0])
+        expected = np.array([0.0, 1.0 - np.exp(-0.5)])
+        assert_allclose(self.loss.rho(r), expected, rtol=1e-10)
 
 
 # --------------------------------------------------------------------------- #

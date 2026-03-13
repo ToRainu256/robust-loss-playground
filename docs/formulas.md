@@ -105,3 +105,31 @@ Parameter: `c > 0` (rejection threshold in normalised space).
 | lim w(r->0) | `1` |
 
 Tukey is a **redescending** influence function: `psi` returns to zero for large residuals, making the loss completely reject outliers beyond `|r| > c * s`.
+
+---
+
+## Geman-McClure
+
+| | Formula |
+|---|---------|
+| phi(u) | `u^2 / (1 + u^2)` |
+| rho(r; s) | `s^2 * u^2 / (1 + u^2)`, `u = r/s` |
+| psi(r; s) | `2r / (1 + u^2)^2` |
+| w(r; s) | `2 / (1 + u^2)^2` |
+| lim w(r->0) | `2` |
+
+Geman-McClure is a **redescending** influence function with a smooth, bounded loss. Unlike Tukey, there is no hard cutoff — outlier rejection increases gradually.
+
+---
+
+## Welsch
+
+| | Formula |
+|---|---------|
+| phi(u) | `1 - exp(-u^2 / 2)` |
+| rho(r; s) | `s^2 (1 - exp(-u^2 / 2))`, `u = r/s` |
+| psi(r; s) | `r exp(-u^2 / 2)` |
+| w(r; s) | `exp(-u^2 / 2)` |
+| lim w(r->0) | `1` |
+
+Welsch is a **redescending** influence function with exponential suppression of outliers. The loss saturates at `s^2` for large residuals.

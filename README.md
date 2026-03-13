@@ -10,7 +10,7 @@ Research-oriented robust loss library with PyTorch and NumPy backends.
 
 - **Residual-first API** -- pass raw residuals, not predictions and targets
 - **Unified M-estimation interface** -- `rho`, `influence`, `weight` on every loss
-- **6 loss functions** -- L2, L1, Huber, Charbonnier, Cauchy, Tukey
+- **8 loss functions** -- L2, L1, Huber, Charbonnier, Cauchy, Tukey, Geman-McClure, Welsch
 - **Two backends** -- PyTorch (`nn.Module`) for training, NumPy for analysis
 - **Built-in plotting** -- `plot_rho`, `plot_influence`, `plot_weight`
 - **Scale convention** -- all losses follow `rho(r; s) = s^2 * phi(r/s)` (L1 excepted)
@@ -54,6 +54,8 @@ scalar_loss = loss_fn(residual)
 | `Charbonnier`| `eps` | Smooth L1 approximation via `sqrt(r^2+eps^2)-eps` |
 | `Cauchy` | -- | Heavy-tailed, `rho ~ log(1+r^2)` |
 | `Tukey` | `c` | Redescending; zero influence beyond `\|r\|>c` |
+| `GemanMcClure`| -- | Redescending; bounded loss `rho ~ r^2/(1+r^2)` |
+| `Welsch` | -- | Redescending; exponential outlier suppression |
 
 ## NumPy Backend
 

@@ -11,7 +11,7 @@ import math
 import torch
 from torch.testing import assert_close
 
-from robust_loss.torch import L1, L2, Cauchy, Charbonnier, Huber, Tukey
+from robust_loss.torch import L1, L2, Cauchy, Charbonnier, GemanMcClure, Huber, Tukey, Welsch
 
 # Shared residual tensor used across all tests.
 R = torch.tensor([-2.0, -1.0, 0.0, 1.0, 2.0])
@@ -189,6 +189,65 @@ class TestTukey:
         r_far = torch.tensor([-10.0, -5.0, 5.0, 10.0])
         expected = torch.zeros_like(r_far)
         assert_close(self.loss.influence(r_far), expected, atol=1e-12, rtol=0.0)
+
+
+# --------------------------------------------------------------------------- #
+# Geman-McClure
+# --------------------------------------------------------------------------- #
+class TestGemanMcClure:
+    def setup_method(self) -> None:
+        self.loss = GemanMcClure(scale=1.0, reduction="none")
+
+    def test_rho(self) -> None:
+        u2 = R**2
+        expected = u2 / (1.0 + u2)
+        assert_close(self.loss.rho(R), expected, rtol=1e-6, atol=0.0)
+
+    def test_influence(self) -> None:
+        u2 = R**2
+        expected = 2.0 * R / (1.0 + u2) ** 2
+        assert_close(self.loss.influence(R), expected, rtol=1e-6, atol=0.0)
+
+    def test_weight(self) -> None:
+        result = self.loss.weight(R)
+        u2 = R**2
+        mask = R.abs() > 1e-12
+        expected_nonzero = 2.0 / (1.0 + u2[mask]) ** 2
+        assert_close(result[mask], expected_nonzero, rtol=1e-6, atol=0.0)
+        assert_close(result[~mask], torch.tensor([2.0]), atol=1e-12, rtol=0.0)
+
+    def test_rho_known_values(self) -> None:
+        r = torch.tensor([0.0, 1.0, 2.0])
+        expected = torch.tensor([0.0, 0.5, 0.8])
+        assert_close(self.loss.rho(r), expected, rtol=1e-10, atol=0.0)
+
+
+# --------------------------------------------------------------------------- #
+# Welsch
+# --------------------------------------------------------------------------- #
+class TestWelsch:
+    def setup_method(self) -> None:
+        self.loss = Welsch(scale=1.0, reduction="none")
+
+    def test_rho(self) -> None:
+        expected = 1.0 - torch.exp(-0.5 * R**2)
+        assert_close(self.loss.rho(R), expected, rtol=1e-6, atol=0.0)
+
+    def test_influence(self) -> None:
+        expected = R * torch.exp(-0.5 * R**2)
+        assert_close(self.loss.influence(R), expected, rtol=1e-6, atol=0.0)
+
+    def test_weight(self) -> None:
+        result = self.loss.weight(R)
+        mask = R.abs() > 1e-12
+        expected_nonzero = torch.exp(-0.5 * R[mask] ** 2)
+        assert_close(result[mask], expected_nonzero, rtol=1e-6, atol=0.0)
+        assert_close(result[~mask], torch.tensor([1.0]), atol=1e-12, rtol=0.0)
+
+    def test_rho_known_values(self) -> None:
+        r = torch.tensor([0.0, 1.0])
+        expected = torch.tensor([0.0, 1.0 - math.exp(-0.5)])
+        assert_close(self.loss.rho(r), expected, rtol=1e-10, atol=0.0)
 
 
 # --------------------------------------------------------------------------- #

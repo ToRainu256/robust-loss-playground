@@ -11,7 +11,7 @@ from __future__ import annotations
 import pytest
 import torch
 
-from robust_loss.torch import L1, L2, Cauchy, Charbonnier, Huber, Tukey
+from robust_loss.torch import L1, L2, Cauchy, Charbonnier, GemanMcClure, Huber, Tukey, Welsch
 
 # =========================================================================== #
 # (A) Influence vs autograd
@@ -26,6 +26,8 @@ SMOOTH_LOSSES_SCALE1 = [
     ),
     pytest.param(Cauchy(scale=1.0, reduction="none"), id="Cauchy-s1"),
     pytest.param(Tukey(c=4.685, scale=1.0, reduction="none"), id="Tukey-s1"),
+    pytest.param(GemanMcClure(scale=1.0, reduction="none"), id="GemanMcClure-s1"),
+    pytest.param(Welsch(scale=1.0, reduction="none"), id="Welsch-s1"),
 ]
 
 SMOOTH_LOSSES_SCALE2 = [
@@ -36,6 +38,8 @@ SMOOTH_LOSSES_SCALE2 = [
     ),
     pytest.param(Cauchy(scale=2.0, reduction="none"), id="Cauchy-s2"),
     pytest.param(Tukey(c=4.685, scale=2.0, reduction="none"), id="Tukey-s2"),
+    pytest.param(GemanMcClure(scale=2.0, reduction="none"), id="GemanMcClure-s2"),
+    pytest.param(Welsch(scale=2.0, reduction="none"), id="Welsch-s2"),
 ]
 
 
@@ -96,6 +100,8 @@ WEIGHT_LIMIT_CASES = [
     ),
     pytest.param(Cauchy(scale=1.0, reduction="none"), 1.0, id="Cauchy"),
     pytest.param(Tukey(c=4.685, scale=1.0, reduction="none"), 1.0, id="Tukey"),
+    pytest.param(GemanMcClure(scale=1.0, reduction="none"), 2.0, id="GemanMcClure"),
+    pytest.param(Welsch(scale=1.0, reduction="none"), 1.0, id="Welsch"),
 ]
 
 
@@ -141,6 +147,8 @@ WEIGHT_LIMIT_SCALED_CASES = [
     ),
     pytest.param(Cauchy(scale=2.0, reduction="none"), 1.0, id="Cauchy-s2"),
     pytest.param(Tukey(c=4.685, scale=2.0, reduction="none"), 1.0, id="Tukey-s2"),
+    pytest.param(GemanMcClure(scale=2.0, reduction="none"), 2.0, id="GemanMcClure-s2"),
+    pytest.param(Welsch(scale=2.0, reduction="none"), 1.0, id="Welsch-s2"),
 ]
 
 

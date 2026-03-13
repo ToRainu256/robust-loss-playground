@@ -31,12 +31,18 @@ from robust_loss.numpy import (
     Charbonnier as NCharbonnier,
 )
 from robust_loss.numpy import (
+    GemanMcClure as NGemanMcClure,
+)
+from robust_loss.numpy import (
     Huber as NHuber,
 )
 from robust_loss.numpy import (
     Tukey as NTukey,
 )
-from robust_loss.torch import L1, L2, Cauchy, Charbonnier, Huber, Tukey
+from robust_loss.numpy import (
+    Welsch as NWelsch,
+)
+from robust_loss.torch import L1, L2, Cauchy, Charbonnier, GemanMcClure, Huber, Tukey, Welsch
 
 # Shared random residuals (fixed seed for reproducibility).
 _gen = torch.Generator().manual_seed(42)
@@ -55,6 +61,8 @@ LOSS_PAIRS = [
     pytest.param(Charbonnier, NCharbonnier, {"eps": 1e-3}, id="Charbonnier"),
     pytest.param(Cauchy, NCauchy, {}, id="Cauchy"),
     pytest.param(Tukey, NTukey, {"c": 4.685}, id="Tukey"),
+    pytest.param(GemanMcClure, NGemanMcClure, {}, id="GemanMcClure"),
+    pytest.param(Welsch, NWelsch, {}, id="Welsch"),
 ]
 
 
@@ -171,6 +179,8 @@ TORCH_CLASSES = [
     pytest.param(Charbonnier, {"eps": 1e-3}, id="Charbonnier"),
     pytest.param(Cauchy, {}, id="Cauchy"),
     pytest.param(Tukey, {"c": 4.685}, id="Tukey"),
+    pytest.param(GemanMcClure, {}, id="GemanMcClure"),
+    pytest.param(Welsch, {}, id="Welsch"),
 ]
 
 NUMPY_CLASSES = [
@@ -180,6 +190,8 @@ NUMPY_CLASSES = [
     pytest.param(NCharbonnier, {"eps": 1e-3}, id="NCharbonnier"),
     pytest.param(NCauchy, {}, id="NCauchy"),
     pytest.param(NTukey, {"c": 4.685}, id="NTukey"),
+    pytest.param(NGemanMcClure, {}, id="NGemanMcClure"),
+    pytest.param(NWelsch, {}, id="NWelsch"),
 ]
 
 

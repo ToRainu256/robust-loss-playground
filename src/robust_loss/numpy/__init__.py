@@ -3,10 +3,12 @@
 from robust_loss.numpy.base import BaseRobustLoss
 from robust_loss.numpy.cauchy import Cauchy
 from robust_loss.numpy.charbonnier import Charbonnier
+from robust_loss.numpy.geman_mcclure import GemanMcClure
 from robust_loss.numpy.huber import Huber
 from robust_loss.numpy.l1 import L1
 from robust_loss.numpy.l2 import L2
 from robust_loss.numpy.tukey import Tukey
+from robust_loss.numpy.welsch import Welsch
 
 __all__ = [
     "BaseRobustLoss",
@@ -16,4 +18,6 @@ __all__ = [
     "Charbonnier",
     "Cauchy",
     "Tukey",
+    "GemanMcClure",
+    "Welsch",
 ]

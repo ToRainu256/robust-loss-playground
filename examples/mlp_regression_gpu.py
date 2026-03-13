@@ -12,7 +12,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from robust_loss.torch import L1, L2, Cauchy, Charbonnier, Huber, Tukey
+from robust_loss.torch import L1, L2, Cauchy, Charbonnier, GemanMcClure, Huber, Tukey, Welsch
 
 # --- Device setup -----------------------------------------------------------
 
@@ -105,6 +105,8 @@ def main() -> None:
         "Charbonnier": Charbonnier(scale=1.0, eps=1e-3, reduction="mean"),
         "Cauchy": Cauchy(scale=1.0, reduction="mean"),
         "Tukey": Tukey(scale=1.0, c=4.685, reduction="mean"),
+        "GemanMcClure": GemanMcClure(scale=1.0, reduction="mean"),
+        "Welsch": Welsch(scale=1.0, reduction="mean"),
     }
 
     results: dict[str, tuple[MLP, list[float]]] = {}
@@ -130,6 +132,8 @@ def main() -> None:
         "Charbonnier": "cyan",
         "Cauchy": "green",
         "Tukey": "magenta",
+        "GemanMcClure": "brown",
+        "Welsch": "teal",
     }
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
